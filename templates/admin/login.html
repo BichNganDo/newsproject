@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="${static_domain}/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="${static_domain}/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="${static_domain}/dist/css/toastr.min.css">
+</head>
+
+<body class="hold-transition login-page" style="margin-top: -150px;">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#"><b>News Project</b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your manage</p>
+
+                <form action="../../index3.html" method="post">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="phone" placeholder="Phone">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-phone"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color: red;" id="phone_error"></p>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color: red;" id="password_error"></p>
+                    <div class="row">
+                        <div class="col-8">
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="button" class="btn btn-primary btn-block" id="login">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+
+
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+
+
+    <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="${static_domain}/dist/js/adminlte.min.js"></script>
+    <script src="${static_domain}/dist/js/notification.js"></script>
+    <script src="${static_domain}/dist/js/toastr.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#login").click(function() {
+
+                let phone = $.trim($("#phone").val());
+                let password = $.trim($("#password").val());
+
+                let flag = true;
+
+                console.log(phone, password);
+
+                if (phone == null || phone == "") {
+                    $("#phone_error").text("Bạn chưa nhập số điện thoại");
+                    flag = false;
+                } else {
+                    $("#phone_error").text("");
+                }
+
+                if (password == null || password == "") {
+                    $("#password_error").text("Mật khẩu không được để trống");
+                    flag = false;
+                } else {
+                    $("#password_error").text("");
+                }
+
+                if (flag) {
+                    $.ajax({
+                        url: "${app_domain}/api/admin?action=login",
+                        type: "POST",
+                        dataType: "json",
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            phone: phone,
+                            password: password
+                        }),
+                        success(response) {
+                            console.log(response);
+                            if (response.errorCode >= 0) {
+                                showNotification("success", response.message);
+                                window.location.replace("${app_domain}/news");
+                            } else {
+                                showNotification("error", response.message);
+                            }
+
+                        }
+                    })
+
+                }
+                return flag;
+            })
+        });
+    </script>
+</body>
+
+</html>
