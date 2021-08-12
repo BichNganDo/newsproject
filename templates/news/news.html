@@ -292,7 +292,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <input type="text" id="value-search" name="search" class="form-control" placeholder="Search">
                                         <div class="input-group-append">
                                             <button type="submit" name="submit" id="btn-search" class="btn btn-primary"><i
-                                                    class="fas fa-search"> Search</i>
+                                                    class="fas fa-search"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -314,9 +314,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <option value="Hide">Hide</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-3 text-right">
+                                <div class="col-sm-2">
+                                    <select class="form-control" id="property">
+                                        <option value="">Select Property</option>
+                                        <option value="Recent">Recent</option>
+                                        <option value="Popular">Popular</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 text-right">
                                     <a class="btn btn-primary" href="/admin/addnews">
-                                        <i class="fas fa-plus"></i> Add News
+                                        <i class="fas fa-plus"></i> Add
                                     </a>
                                 </div>
                             </div>
@@ -343,7 +350,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 1%">
                                             ID
                                         </th>
-                                        <th style="width: 7%">
+                                        <th style="width: 15%">
                                             Title
                                         </th>
                                         <th style="width: 15%">
@@ -358,13 +365,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 6%">
                                             Status
                                         </th>
+                                        <th style="width: 6%">
+                                            Property
+                                        </th>
                                         <th style="width: 7%">
-                                            Id Author
+                                            Author
                                         </th>
-                                        <th style="width: 10%">
-                                            Id Category
+                                        <th style="width: 8%">
+                                            Category
                                         </th>
-                                        <th style="width: 24%">
+                                        <th style="width: 9%">
                                         </th>
                                     </tr>
                                 </thead>
@@ -482,20 +492,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <td>
                             <ul class="list-inline">
                                 <li class="list-inline-item">
-                                    <img alt="Avatar" class="table-avatar" src="` + neww.image + `">
+                                    <img alt="Avatar" style="width: 90% ; height: 90%" src="` + neww.image + `">
                                 </li>
                             </ul>
                         </td>
                         <td>` + neww.description + `</td>
                         <td>` + neww.postDate + `</td>
                         <td><span class="badge badge-secondary">` + neww.status + `</span></td>
+                        <td>` + neww.property + `</td>
                         <td>` + neww.author_name + `</td>
                         <td>` + neww.cate_name + `</td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="#">
+                            <a class="btn btn-primary btn-sm" href="#" style="margin-bottom: 8px">
                                 <i class="fas fa-folder"></i> View
                             </a>
-                            <a class="btn btn-info btn-sm" href="${app_domain}/editnews?id=` + neww.id_news + `">
+                            <a class="btn btn-info btn-sm" href="${app_domain}/admin/editnews?id=` + neww.id_news + `" style="margin-bottom: 8px">
                                 <i class="fas fa-pencil-alt"></i> Edit
                             </a>
                             <a onclick="deleteNews(` + neww.id_news + `)" class="btn btn-danger btn-sm" href="#">
@@ -542,8 +553,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var idCate = $.trim($("#id_category").val());
             var author = $.trim($("#id_author").val());
             var status = $.trim($("#status").val());
+            var property = $.trim($("#property").val());
 
-            searchNews(currentPageIndex, valueSearch, idCate, author, status);
+            searchNews(currentPageIndex, valueSearch, idCate, author, status, property);
         }
 
 
@@ -584,17 +596,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         }
 
-
         $("#btn-search").click(function() {
             var valueSearch = $.trim($("#value-search").val());
-            searchNews(currentPageIndex, valueSearch, $('#id_category').val(), $('#id_author').val(), $('#status').val());
+            searchNews(currentPageIndex, valueSearch, $('#id_category').val(), $('#id_author').val(), $('#status').val(), $("#property").val());
         });
         // Lọc Category 
         $('#id_category').on('change', function() {
             var valueSearch = $.trim($("#value-search").val());
             var author = $.trim($("#id_author").val());
             var status = $.trim($("#status").val());
-            searchNews(currentPageIndex, valueSearch, this.value, author, status);
+            var property = $.trim($("#property").val());
+            searchNews(currentPageIndex, valueSearch, this.value, author, status, property);
         });
 
         // Lọc Author
@@ -602,7 +614,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var valueSearch = $.trim($("#value-search").val());
             var idCate = $.trim($("#id_category").val());
             var status = $.trim($("#status").val());
-            searchNews(currentPageIndex, valueSearch, idCate, this.value, status);
+            var property = $.trim($("#property").val());
+            searchNews(currentPageIndex, valueSearch, idCate, this.value, status, property);
         });
 
         // Lọc Status
@@ -610,12 +623,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var valueSearch = $.trim($("#value-search").val());
             var idCate = $.trim($("#id_category").val());
             var author = $.trim($("#id_author").val());
-            searchNews(currentPageIndex, valueSearch, idCate, author, this.value);
+            var property = $.trim($("#property").val());
+            searchNews(currentPageIndex, valueSearch, idCate, author, this.value, property);
+        });
+
+        // Lọc Property
+        $('#property').on('change', function() {
+            var valueSearch = $.trim($("#value-search").val());
+            var idCate = $.trim($("#id_category").val());
+            var author = $.trim($("#id_author").val());
+            var status = $.trim($("#status").val());
+            searchNews(currentPageIndex, valueSearch, idCate, author, status, this.value);
         });
 
 
-
-        function searchNews(currentPageIndex, valueSearch, idCate, author, status) {
+        function searchNews(currentPageIndex, valueSearch, idCate, author, status, property) {
             $.ajax({
                 url: "${app_domain}/admin/api/news?action=search",
                 type: "POST",
@@ -626,7 +648,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     valueSearch: valueSearch,
                     idCate: idCate,
                     author: author,
-                    status: status
+                    status: status,
+                    property: property
                 }),
                 success(response) {
                     renderListNews(response.data);

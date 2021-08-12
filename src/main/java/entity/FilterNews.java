@@ -10,19 +10,22 @@ package entity;
  * @author Ngan Do
  */
 public class FilterNews {
+
     private String query;
     private int id_author;
     private int id_cate;
     private String status;
+    private String property;
 
     public FilterNews() {
     }
 
-    public FilterNews(String query, int id_author, int id_cate, String status) {
+    public FilterNews(String query, int id_author, int id_cate, String status, String property) {
         this.query = query;
         this.id_author = id_author;
         this.id_cate = id_cate;
         this.status = status;
+        this.property = property;
     }
 
     public String getQuery() {
@@ -56,8 +59,13 @@ public class FilterNews {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
 
-    
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
 }

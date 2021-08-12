@@ -50,10 +50,11 @@ public class ApiNewsServlet extends HttpServlet {
                 String content = jData.optString("content");
                 String description = jData.optString("description");
                 String status = jData.optString("status");
+                String property = jData.optString("property");
                 int id_cate = jData.optInt("idCategory"); //trung ten o ajax
                 int id_author = jData.optInt("idAuthor");
 
-                int addNews = NewsModel.INSTANCE.addNews(title, image, content, description, status, id_author, id_cate);
+                int addNews = NewsModel.INSTANCE.addNews(title, image, content, description, status, property, id_author, id_cate);
                 if (addNews >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Thêm news thành công!");
@@ -73,6 +74,7 @@ public class ApiNewsServlet extends HttpServlet {
                 String content = jData.optString("content");
                 String description = jData.optString("description");
                 String status = jData.optString("status");
+                String property = jData.optString("property");
                 int id_cate = jData.optInt("idCategory"); //trung ten o ajax
                 int id_author = jData.optInt("idAuthor");
 
@@ -83,7 +85,7 @@ public class ApiNewsServlet extends HttpServlet {
                     return;
                 }
 
-                int editNews = NewsModel.INSTANCE.editNews(id, title, image, content, description, status, id_author, id_cate);
+                int editNews = NewsModel.INSTANCE.editNews(id, title, image, content, description, status, property, id_author, id_cate);
                 if (editNews >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Sửa news thành công!");
@@ -113,6 +115,7 @@ public class ApiNewsServlet extends HttpServlet {
                 String valueSearch = jData.optString("valueSearch");
                 int id_cate = jData.optInt("idCate");
                 String status = jData.optString("status");
+                String property = jData.optString("property");
                 int id_author = jData.optInt("author");
                 int pageIndex = jData.optInt("pageIndex");
 
@@ -124,6 +127,7 @@ public class ApiNewsServlet extends HttpServlet {
                 filter.setId_cate(id_cate);
                 filter.setStatus(status);
                 filter.setId_author(id_author);
+                filter.setProperty(property);
 
                 List<News> listSlice = NewsModel.INSTANCE.getSlice(filter, limit, offset);
                 int allNews = NewsModel.INSTANCE.getAllNews(filter);

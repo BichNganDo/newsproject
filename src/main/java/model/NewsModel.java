@@ -46,6 +46,7 @@ public class NewsModel {
                 result.setPostDate(dateString);
 
                 result.setStatus(rs.getString("status"));
+                result.setProperty(rs.getString("property"));
                 result.setId_author(rs.getInt("id_author"));
                 result.setId_category(rs.getInt("id_cate"));
 
@@ -88,6 +89,9 @@ public class NewsModel {
             if (filter.getStatus() != null && !"".equals(filter.getStatus())) {
                 sql = sql + " AND news.status = '" + filter.getStatus() + "' ";
             }
+            if (filter.getProperty() != null && !"".equals(filter.getProperty())) {
+                sql = sql + " AND news.property = '" + filter.getProperty() + "' ";
+            }
             sql = sql + " LIMIT " + limit + " OFFSET " + offset;
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -108,6 +112,7 @@ public class NewsModel {
                 news.setPostDate(dateString);
 
                 news.setStatus(rs.getString("status"));
+                news.setProperty(rs.getString("property"));
                 news.setId_author(rs.getInt("id_author"));
                 news.setId_category(rs.getInt("id_cate"));
                 news.setCate_name(rs.getString("cate_name"));
@@ -149,6 +154,10 @@ public class NewsModel {
                 sql = sql + " AND news.status = '" + filter.getStatus() + "' ";
             }
 
+            if (filter.getProperty() != null && !"".equals(filter.getProperty())) {
+                sql = sql + " AND news.property = '" + filter.getProperty() + "' ";
+            }
+
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -165,7 +174,7 @@ public class NewsModel {
     }
 
     public int addNews(String title, String image, String content,
-            String description, String status, int id_author, int id_category) {
+            String description, String status, String property, int id_author, int id_category) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -173,10 +182,10 @@ public class NewsModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             String sql = "INSERT INTO `" + NAMETABLE + "`"
-                    + "(`title`, `image`, `content`, `description`, `post_date`, `status`, `id_author`, `id_cate`) "
+                    + "(`title`, `image`, `content`, `description`, `post_date`, `status`, `property` ,`id_author`, `id_cate`) "
                     + "VALUES "
                     + "('" + title + "', '" + image + "','" + content + "', '" + description + "', '"
-                    + System.currentTimeMillis() + "', '" + status + "','" + id_author + "', '" + id_category + "')";
+                    + System.currentTimeMillis() + "', '" + status + "','" + property + "','" + id_author + "', '" + id_category + "')";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             int rs = preparedStatement.executeUpdate();
@@ -192,7 +201,7 @@ public class NewsModel {
     }
 
     public int editNews(int id, String title, String image, String content,
-            String description, String status, int id_author, int id_category) {
+            String description, String status, String property, int id_author, int id_category) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -202,7 +211,7 @@ public class NewsModel {
 
             String sql = "UPDATE `" + NAMETABLE + "` SET `title`='" + title + "', "
                     + "`image`='" + image + "', `content`='" + content + "', "
-                    + "`description`='" + description + "', `status`='" + status + "', "
+                    + "`description`='" + description + "', `status`='" + status + "', `property`='" + property + "', "
                     + "`id_author`='" + id_author + "', `id_cate`='" + id_category + "' "
                     + " WHERE `id_news`='" + id + "'";
 

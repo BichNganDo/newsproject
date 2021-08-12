@@ -9,6 +9,7 @@ public class News {
     private String description;
     private String postDate;
     private String status;
+    private String property;
     private int id_author;
     private int id_category;
     private String cate_name;
@@ -17,7 +18,7 @@ public class News {
     public News() {
     }
 
-    public News(int id_news, String title, String image, String content, String description, String postDate, String status, int id_author, int id_category, String cate_name, String author_name) {
+    public News(int id_news, String title, String image, String content, String description, String postDate, String status, String property, int id_author, int id_category, String cate_name, String author_name) {
         this.id_news = id_news;
         this.title = title;
         this.image = image;
@@ -25,6 +26,7 @@ public class News {
         this.description = description;
         this.postDate = postDate;
         this.status = status;
+        this.property = property;
         this.id_author = id_author;
         this.id_category = id_category;
         this.cate_name = cate_name;
@@ -103,6 +105,14 @@ public class News {
         this.status = status;
     }
 
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
     public String getCate_name() {
         return cate_name;
     }
@@ -118,6 +128,5 @@ public class News {
     public void setAuthor_name(String author_name) {
         this.author_name = author_name;
     }
-    
 
 }

@@ -296,12 +296,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <input type="text" class="form-control" id="content" placeholder="Content">
+                                    <textarea type="text" class="form-control" id="content" rows="5" placeholder="Content"></textarea>
                                     <p style="color: red;" id="content_error"></p>
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <input type="text" class="form-control" id="description" placeholder="Description">
+                                    <textarea type="text" class="form-control" id="description" rows="3" placeholder="Description"></textarea>
                                     <p style="color: red;" id="description_error"></p>
                                 </div>
                                 <div class="form-group">
@@ -318,7 +318,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>ID Author</label>
+                                    <label>Property</label>
+                                    <select class="form-control" id="property">
+                                        <option value="0">Select Property</option>
+                                        <option value="Recent">Recent</option>
+                                        <option value="Popular">Popular</option>
+                                    </select>
+                                    <p style="color: red;" id="property_error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Author</label>
                                     <select class="form-control" id="id_author">
                                         <option value="0">Select Author</option>
                                         <option value="1">Author 1</option>
@@ -328,7 +337,7 @@
                                     <p style="color: red;" id="idAuthor_error"></p>
                                 </div>
                                 <div class="form-group">
-                                    <label>ID Category</label>
+                                    <label>Category</label>
                                     <select class="form-control" id="id_category">
                                         <option value="0">Select Category</option>
                                         <option value="1">Author 1</option>
@@ -370,10 +379,10 @@
                     let content = $.trim($("#content").val());
                     let description = $.trim($("#description").val());
                     let status = $("input[name='status']:checked").val();
+                    let property = $.trim($("#property").val());
                     let idAuthor = $.trim($("#id_author").val());
                     let idCategory = $.trim($("#id_category").val());
                     let flag = true;
-                    console.log(title, image, content, description, status, idAuthor, idCategory);
 
                     if (title == "" || title == null) {
                         $("#title_error").text("Bạn chưa nhập title");
@@ -403,6 +412,13 @@
                         $("#description_error").text("");
                     }
 
+                    if (property == "" || property == null) {
+                        $("#property_error").text("Bạn chưa nhập property");
+                        flag = false;
+                    } else {
+                        $("#property_error").text("");
+                    }
+
 
                     if (idAuthor == "" || idAuthor == null) {
                         $("#idAuthor_error").text("Bạn chưa chọn author");
@@ -430,6 +446,7 @@
                                 content: content,
                                 description: description,
                                 status: status,
+                                property: property,
                                 idAuthor: idAuthor,
                                 idCategory: idCategory
                             }),
@@ -441,6 +458,7 @@
                                     $("#content").val("");
                                     $("#description").val("");
                                     $("#status").val("");
+                                    $("#property").val("");
                                     $("#id_author").val("");
                                     $("#id_category").val("");
                                     window.location.replace("${app_domain}/admin/news");

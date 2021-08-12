@@ -19,6 +19,9 @@ import servlets.author.ManageAuthorServlet;
 import servlets.category.AddCategoryServlet;
 import servlets.category.EditCategoryServlet;
 import servlets.category.ManageCategoryServlet;
+import servlets.client.DetailNewsServlet;
+import servlets.client.IndexServlet;
+import servlets.client.NewsInCategory;
 import servlets.news.AddNewsServlet;
 import servlets.news.EditNewsServlet;
 import servlets.news.ManageNewsServlet;
@@ -46,6 +49,10 @@ public class Main {
         context.addServlet(new ServletHolder(new ApiCategoryServlet()), "/admin/api/category");
         context.addServlet(new ServletHolder(new ApiNewsServlet()), "/admin/api/news");
         context.addServlet(new ServletHolder(new ApiAdminServlet()), "/admin/api/admin");
+
+        context.addServlet(new ServletHolder(new IndexServlet()), "/index");
+        context.addServlet(new ServletHolder(new NewsInCategory()), "/danh-muc");
+        context.addServlet(new ServletHolder(new DetailNewsServlet()), "/chi-tiet-tin-tuc");
 
         ContextHandler resourceHandler = new ContextHandler("/static");
         String resource = "./public";
